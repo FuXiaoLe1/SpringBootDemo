@@ -1,0 +1,68 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource   # 有监控等需求，可以换成 com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/ChaosUAA?useUnicode=true&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&serverTimezone=UTC
+    username: root
+    password: 123456
+    hikari:  # 如果数据库连接池换成drui，则需要屏蔽该部分配置
+      auto-commit: false
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+  devtools:  #开启热部署
+    restart:
+      enabled: true
+      additional-paths: src/main/java  #重启范围
+
+  #redis相关配置
+  #redis:
+    #cluster:
+      #nodes: 192.168.100.225:7000,192.168.100.226:7000,192.168.100.227:7000 #redis集群环境
+      #host: 192.168.100.134 #产品redis测试环境 单体
+      # port: 6379
+      #password: cplh1234
+      #database: 1
+      #timeout: 5000
+      #pool:
+        #max-active: 8
+        #max-wait: -1
+        #max-idle: 500
+        #min-idle: 0
+
+  #kafka相关配置
+  #kafka:
+    #bootstrap-servers: 192.168.100.225:9092 #产品kafka测试环境
+    #kafka 生产者相关配置
+      # producer:
+       #retries: 0
+       #batch-size: 16384
+       #buffer-memory: 33554432
+      #编码类型
+       # key-serializer: org.apache.kafka.common.serialization.StringSerializer
+       # value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    #kafka 消费者相关配置
+   # consumer:
+       #group-id: kafka-consumer-group
+       #auto-offset-reset: earliest
+       #enable-auto-commit: true
+       #auto-commit-interval: 100
+      #解码类型
+       #key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+       #value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+mybatis:
+  type-aliases-package: com.cplh.modle
+  mapper-locations: classpath*:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+remote:
+  maxTotalConnect: 20
+  maxConnectPerRoute: 2000
+  connectTimeout: 2000
+  readTimeout: 30000
